@@ -25,5 +25,26 @@
   virtualisation.docker.enable = true;
   virtualisation.podman.enable = true;
 
-  services.flatpak.enable = true;
+  services.flatpak = {
+    enable = true;
+    remotes = {
+      "flathub" = "https://dl.flathub.org/repo/flathub.flatpakrepo";
+    };
+    packages = [
+      "flathub:app/io.gitlab.librewolf-community//stable"
+      "flathub:app/org.videolan.VLC//stable"
+      "flathub:app/com.github.tchx84.Flatseal//stable"
+      "flathub:app/com.mattjakeman.ExtensionManager//stable"
+      "flathub:app/org.qbittorrent.qBittorrent//stable"
+      "flathub:app/org.localsend.localsend_app//stable"
+      "flathub:app/md.obsidian.Obsidian//stable"
+      "flathub:app/cc.arduino.IDE2//stable"
+      "flathub:app/com.stremio.Stremio//stable"
+      "flathub:app/com.rustdesk.RustDesk//stable"
+      "flathub:app/org.cryptomator.Cryptomator//stable"
+      "flathub:app/rest.insomnia.Insomnia//stable"
+      "flathub:app/org.gimp.GIMP//stable"
+      "flathub:app/io.github.glaumar.QRookie//stable"
+    ];
+  };
 }
