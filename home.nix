@@ -89,7 +89,7 @@
 
     "org/gnome/mutter" = {
       dynamic-workspaces = true;
-    }
+    };
 
     "org/gnome/desktop/interface" = {
       accent-color = "red";
