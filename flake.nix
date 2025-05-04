@@ -10,9 +10,10 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
     flatpaks.url = "github:GermanBread/declarative-flatpak/stable-v3";
+    flake-utils.url = "github:numtide/flake-utils";
   };
 
-  outputs = inputs@{ self, nixpkgs, home-manager, flatpaks, ... }: {
+  outputs = inputs@{ self, nixpkgs, home-manager, flatpaks, flake-utils, ... }: {
     nixosConfigurations.pc = nixpkgs.lib.nixosSystem {
       system = "x86_64-linux";
       modules = [

@@ -1,11 +1,44 @@
-{ config, pkgs, lib, ... }:
-
 {
-  nix.settings.experimental-features = [ "nix-command" "flakes" ];
-  
+  config,
+  pkgs,
+  lib,
+  ...
+}:
+
+ let
+  # Complete Android package composition
+  androidComposition = pkgs.androidenv.composeAndroidPackages {
+    toolsVersion = "26.1.1";
+    platformToolsVersion = "34.0.4";
+    buildToolsVersions = [ "34.0.0" ];
+    platformVersions = [ "34" ];
+    cmakeVersions = [ "3.22.1" ];
+    includeNDK = false;
+    includeEmulator = true;
+    includeSystemImages = true;
+    systemImageTypes = [ "google_apis_playstore" ];
+    abiVersions = [ "x86_64" "armeabi-v7a" ];
+    extraLicenses = [ 
+      "android-sdk-license"
+      "android-googletv-license"
+      "android-sdk-preview-license"
+    ];
+  };
+in
+{
+  nix.settings.experimental-features = [
+    "nix-command"
+    "flakes"
+  ];
+
   networking.hostName = lib.mkForce "pc";
 
-  users.users.imranr.extraGroups = lib.mkAfter [ "docker" "kvm" "adbusers" "user-with-access-to-virtualbox" ];
+  users.users.imranr.extraGroups = lib.mkAfter [
+    "docker"
+    "kvm"
+    "adbusers"
+    "user-with-access-to-virtualbox"
+  ];
 
   programs.adb.enable = true;
 
@@ -18,10 +51,24 @@
   };
 
   environment.systemPackages = with pkgs; [
-    git curl wget inotify-tools libheif ffmpeg restic syncthing ffmpeg chromium
-    scrcpy perl perlPackages.ImageExifTool openssl htop nodejs
-    android-studio flutter
-    veracrypt mullvad-vpn
+    git
+    curl
+    wget
+    inotify-tools
+    libheif
+    ffmpeg
+    restic
+    syncthing
+    ffmpeg
+    chromium
+    scrcpy
+    perl
+    perlPackages.ImageExifTool
+    openssl
+    htop
+    nodejs
+    veracrypt
+    mullvad-vpn
     distrobox
     nixfmt-rfc-style
     (vscode-with-extensions.override {
@@ -35,7 +82,13 @@
         # jeanp413.open-remote-ssh # fails
       ];
     })
-    steam lutris
+    steam
+    lutris
+    androidComposition.androidsdk
+    flutter
+    android-studio
+    android-udev-rules
+    ungoogled-chromium
   ];
 
   services.udev.extraRules = ''
@@ -45,7 +98,6 @@
     SUBSYSTEMS=="usb", ATTRS{idVendor}=="2341", ATTRS{idProduct}=="0070", MODE="0666"
   '';
 
-  nixpkgs.config.allowUnfree = lib.mkForce true;
   # virtualisation.virtualbox.host.enable = true;
   # virtualisation.virtualbox.host.enableExtensionPack = true;
 
@@ -78,5 +130,35 @@
   };
 
   services.xserver.excludePackages = [ pkgs.xterm ];
-  environment.gnome.excludePackages = [ pkgs.gnome-tour pkgs.gnome-maps pkgs.firefox pkgs.rhythmbox pkgs.totem pkgs.yelp pkgs.gnome-music ];
+  environment.gnome.excludePackages = [
+    pkgs.gnome-tour
+    pkgs.gnome-maps
+    pkgs.firefox
+    pkgs.rhythmbox
+    pkgs.totem
+    pkgs.yelp
+    pkgs.gnome-music
+  ];
+
+  nixpkgs.config.allowUnfree = true;
+  nixpkgs.config.android_sdk.accept_license = true;
+
+  environment.variables = {
+    ANDROID_SDK_ROOT = "${androidComposition.androidsdk}/libexec/android-sdk";
+    ANDROID_HOME = "${androidComposition.androidsdk}/libexec/android-sdk";
+    JAVA_HOME = "${pkgs.jdk21.home}";
+    CHROME_EXECUTABLE = "${pkgs.ungoogled-chromium}/bin/chromium";
+  };
+
+
+  environment.shellInit = ''
+    export PATH="$ANDROID_SDK_ROOT/cmdline-tools/latest/bin:$ANDROID_SDK_ROOT/platform-tools:$PATH"
+  '';
+
+  programs.java = {
+    enable = true;
+    package = pkgs.jdk17;
+  };
+
+  services.udev.packages = [ pkgs.android-udev-rules ];
 }
