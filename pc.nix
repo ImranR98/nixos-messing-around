@@ -11,6 +11,12 @@
 
   programs.firefox.enable = lib.mkForce false;
 
+  services.syncthing = {
+    enable = true;
+    # dataDir = "/home/your_username/Sync";
+    openDefaultPorts = true;
+  };
+
   environment.systemPackages = with pkgs; [
     git curl wget inotify-tools libheif ffmpeg restic syncthing ffmpeg chromium
     scrcpy perl perlPackages.ImageExifTool openssl htop nodejs

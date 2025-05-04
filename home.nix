@@ -79,8 +79,8 @@
     };
 
     "org/gnome/settings-daemon/plugins/media-keys" = {
-      www = "['<Super>b']";
-      email = "['<Super>m']";
+      www = ["<Super>b"];
+      email = ["<Super>m"];
     };
 
     "org/gnome/desktop/interface" = {
