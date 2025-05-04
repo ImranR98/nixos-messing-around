@@ -3,7 +3,9 @@
 {
   networking.hostName = lib.mkForce "pc";
 
-  users.users.imranr.extraGroups = lib.mkAfter [ "docker" ];
+  users.users.imranr.extraGroups = lib.mkAfter [ "docker" "kvm" "adbusers" "user-with-access-to-virtualbox" ];
+
+  programs.adb.enable = true;
 
   programs.firefox.enable = lib.mkForce false;
 
@@ -13,6 +15,7 @@
     vscodium android-studio flutter
     veracrypt mullvad-vpn
     distrobox
+    nixfmt-rfc-style
   ];
 
   services.udev.extraRules = ''
@@ -21,6 +24,10 @@
     KERNEL=="ttyACM[0-9]*", MODE="0666"
     SUBSYSTEMS=="usb", ATTRS{idVendor}=="2341", ATTRS{idProduct}=="0070", MODE="0666"
   '';
+
+  nixpkgs.config.allowUnfree = lib.mkForce true;
+  virtualisation.virtualbox.host.enable = true;
+  virtualisation.virtualbox.host.enableExtensionPack = true;
 
   virtualisation.docker.enable = true;
   virtualisation.podman.enable = true;
@@ -44,7 +51,11 @@
       "flathub:app/org.cryptomator.Cryptomator//stable"
       "flathub:app/rest.insomnia.Insomnia//stable"
       "flathub:app/org.gimp.GIMP//stable"
+      "flathub:app/org.getmonero.Monero//stable"
       "flathub:app/io.github.glaumar.QRookie//stable"
     ];
   };
+
+  services.xserver.excludePackages = [ pkgs.xterm ];
+  environment.gnome.excludePackages = [ pkgs.gnome-tour pkgs.gnome-maps pkgs.firefox pkgs.rhythmbox ];
 }

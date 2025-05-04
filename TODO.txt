@@ -1,0 +1,5 @@
+- Git config (email/name)
+- Etesync service, Syncthing service if needed separately
+- Delete tour and help apps
+- Fix extensions
+- Virtualbox

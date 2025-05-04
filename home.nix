@@ -1,38 +1,6 @@
 { config, pkgs, ... }:
 
 {
-  # home.activation = {
-  #   addFlathub = hm.dag.entryAfter ["writeBoundary"] ''
-  #     ${pkgs.flatpak}/bin/flatpak remote-add --user --if-not-exists \
-  #       flathub https://dl.flathub.org/repo/flathub.flatpakrepo
-  #   '';
-
-  #   installFlatpaks = hm.dag.entryAfter ["addFlathub"] ''
-  #     ${pkgs.flatpak}/bin/flatpak install --user -y flathub \
-  #       io.gitlab.librewolf-community \
-  #       org.videolan.VLC \
-  #       com.github.tchx84.Flatseal \
-  #       com.mattjakeman.ExtensionManager \
-  #       org.qbittorrent.qBittorrent \
-  #       org.localsend.localsend_app \
-  #       md.obsidian.Obsidian \
-  #       cc.arduino.IDE2 \
-  #       com.stremio.Stremio \
-  #       com.rustdesk.RustDesk \
-  #       org.cryptomator.Cryptomator \
-  #       rest.insomnia.Insomnia \
-  #       org.gimp.GIMP \
-  #       io.github.glaumar.QRookie
-  #   '';
-
-  #   fixStremio = hm.dag.entryAfter ["installFlatpaks"] ''
-  #     ${pkgs.flatpak}/bin/flatpak override --user \
-  #       --filesystem=!host com.stremio.Stremio
-  #     ${pkgs.flatpak}/bin/flatpak override --user \
-  #       --env=LD_PRELOAD= com.stremio.Stremio
-  #   '';
-  # };
-
   # GNOME configuration
   dconf.settings = {
     "org/gnome/shell" = {
@@ -64,16 +32,6 @@
       "custom-keybindings/custom2/binding" = "<Super>c";
     };
   };
-
-  # Systemd services
-  # systemd.user.services.etesync-dav = {
-  #   Unit.Description = "EteSync DAV Server";
-  #   Service = {
-  #     ExecStart = "${pkgs.etesync-dav}/bin/etesync-dav";
-  #     Restart = "always";
-  #   };
-  #   Install.WantedBy = [ "default.target" ];
-  # };
 
   home.stateVersion = "24.11";
 }
