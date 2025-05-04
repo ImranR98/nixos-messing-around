@@ -66,6 +66,10 @@
       audible-bell = false;
     };
 
+    "org/gnome/Console" = {
+      audible-bell = false;
+    }
+
     "org/gnome/settings-daemon/plugins/power" = {
       power-button-action = "nothing";
     };
@@ -82,6 +86,10 @@
       www = ["<Super>b"];
       email = ["<Super>m"];
     };
+
+    "org/gnome/mutter" = {
+      dynamic-workspaces = true;
+    }
 
     "org/gnome/desktop/interface" = {
       accent-color = "red";
