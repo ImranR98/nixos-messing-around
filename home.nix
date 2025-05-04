@@ -1,4 +1,4 @@
-{ config, pkgs, ... }:
+{ config, pkgs, lib, ... }:
 
 {
   home.packages = with pkgs; [
@@ -6,6 +6,7 @@
     gnomeExtensions.clipboard-indicator
     gnomeExtensions.gsconnect
     gnomeExtensions.night-theme-switcher
+    etesync-dav
   ];
 
   dconf.settings = {
@@ -68,7 +69,7 @@
 
     "org/gnome/Console" = {
       audible-bell = false;
-    }
+    };
 
     "org/gnome/settings-daemon/plugins/power" = {
       power-button-action = "nothing";
@@ -99,6 +100,28 @@
   programs.git = {
     userName = "Imran R";
     userEmail = "contact@imranr.dev";
+  };
+
+  systemd.user.services.etesync-dav = {
+    Unit = {
+      Description = "EteSync DAV Server (User Service)";
+      After = [ "network.target" "graphical-session.target" ];
+    };
+
+    Service = {
+      ExecStart = "${pkgs.etesync-dav}/bin/etesync-dav";
+      Restart = "on-failure";
+      Environment = "ETESYNC_DATA_DIR=${config.home.homeDirectory}/.local/share/etesync-dav";
+    };
+
+    Install = {
+      WantedBy = [ "default.target" ]; # Start when user logs in
+    };
+  };
+  home.activation = {
+    createEtesyncDir = lib.hm.dag.entryAfter ["writeBoundary"] ''
+      mkdir -p ${config.home.homeDirectory}/.local/share/etesync-dav
+    '';
   };
 
   home.stateVersion = "24.11";

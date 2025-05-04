@@ -1,3 +1,2 @@
-- Etesync service, Syncthing service if needed separately
 - Flutter
 - Switch to Hyprland
