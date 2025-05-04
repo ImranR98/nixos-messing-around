@@ -1,4 +1,9 @@
-{ config, pkgs, lib, ... }:
+{
+  config,
+  pkgs,
+  lib,
+  ...
+}:
 
 {
   home.packages = with pkgs; [
@@ -84,8 +89,8 @@
     };
 
     "org/gnome/settings-daemon/plugins/media-keys" = {
-      www = ["<Super>b"];
-      email = ["<Super>m"];
+      www = [ "<Super>b" ];
+      email = [ "<Super>m" ];
     };
 
     "org/gnome/mutter" = {
@@ -105,7 +110,10 @@
   systemd.user.services.etesync-dav = {
     Unit = {
       Description = "EteSync DAV Server (User Service)";
-      After = [ "network.target" "graphical-session.target" ];
+      After = [
+        "network.target"
+        "graphical-session.target"
+      ];
     };
 
     Service = {
@@ -119,7 +127,7 @@
     };
   };
   home.activation = {
-    createEtesyncDir = lib.hm.dag.entryAfter ["writeBoundary"] ''
+    createEtesyncDir = lib.hm.dag.entryAfter [ "writeBoundary" ] ''
       mkdir -p ${config.home.homeDirectory}/.local/share/etesync-dav
     '';
   };

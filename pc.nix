@@ -5,26 +5,6 @@
   ...
 }:
 
- let
-  # Complete Android package composition
-  androidComposition = pkgs.androidenv.composeAndroidPackages {
-    toolsVersion = "26.1.1";
-    platformToolsVersion = "34.0.4";
-    buildToolsVersions = [ "34.0.0" ];
-    platformVersions = [ "34" ];
-    cmakeVersions = [ "3.22.1" ];
-    includeNDK = false;
-    includeEmulator = true;
-    includeSystemImages = true;
-    systemImageTypes = [ "google_apis_playstore" ];
-    abiVersions = [ "x86_64" "armeabi-v7a" ];
-    extraLicenses = [ 
-      "android-sdk-license"
-      "android-googletv-license"
-      "android-sdk-preview-license"
-    ];
-  };
-in
 {
   nix.settings.experimental-features = [
     "nix-command"
@@ -60,7 +40,6 @@ in
     restic
     syncthing
     ffmpeg
-    chromium
     scrcpy
     perl
     perlPackages.ImageExifTool
@@ -84,10 +63,6 @@ in
     })
     steam
     lutris
-    androidComposition.androidsdk
-    flutter
-    android-studio
-    android-udev-rules
     ungoogled-chromium
   ];
 
@@ -141,24 +116,6 @@ in
   ];
 
   nixpkgs.config.allowUnfree = true;
-  nixpkgs.config.android_sdk.accept_license = true;
-
-  environment.variables = {
-    ANDROID_SDK_ROOT = "${androidComposition.androidsdk}/libexec/android-sdk";
-    ANDROID_HOME = "${androidComposition.androidsdk}/libexec/android-sdk";
-    JAVA_HOME = "${pkgs.jdk21.home}";
-    CHROME_EXECUTABLE = "${pkgs.ungoogled-chromium}/bin/chromium";
-  };
-
-
-  environment.shellInit = ''
-    export PATH="$ANDROID_SDK_ROOT/cmdline-tools/latest/bin:$ANDROID_SDK_ROOT/platform-tools:$PATH"
-  '';
-
-  programs.java = {
-    enable = true;
-    package = pkgs.jdk17;
-  };
 
   services.udev.packages = [ pkgs.android-udev-rules ];
 }
