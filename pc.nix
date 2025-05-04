@@ -72,5 +72,5 @@
   };
 
   services.xserver.excludePackages = [ pkgs.xterm ];
-  environment.gnome.excludePackages = [ pkgs.gnome-tour pkgs.gnome-maps pkgs.firefox pkgs.rhythmbox pkgs.totem pkgs.yelp ];
+  environment.gnome.excludePackages = [ pkgs.gnome-tour pkgs.gnome-maps pkgs.firefox pkgs.rhythmbox pkgs.totem pkgs.yelp pkgs.gnome-music ];
 }
