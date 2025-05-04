@@ -11,11 +11,22 @@
 
   environment.systemPackages = with pkgs; [
     git curl wget inotify-tools libheif ffmpeg restic syncthing ffmpeg chromium
-    scrcpy perl perlPackages.ImageExifTool openssl
-    vscodium android-studio flutter
+    scrcpy perl perlPackages.ImageExifTool openssl htop
+    android-studio flutter
     veracrypt mullvad-vpn
     distrobox
     nixfmt-rfc-style
+    (vscode-with-extensions.override {
+      vscode = vscodium;
+      vscodeExtensions = with vscode-extensions; [
+        jnoortheen.nix-ide
+        dart-code.flutter
+        dart-code.dart-code
+        ms-python.python
+        redhat.ansible
+        # jeanp413.open-remote-ssh # fails
+      ];
+    })
   ];
 
   services.udev.extraRules = ''
@@ -26,8 +37,8 @@
   '';
 
   nixpkgs.config.allowUnfree = lib.mkForce true;
-  virtualisation.virtualbox.host.enable = true;
-  virtualisation.virtualbox.host.enableExtensionPack = true;
+  # virtualisation.virtualbox.host.enable = true;
+  # virtualisation.virtualbox.host.enableExtensionPack = true;
 
   virtualisation.docker.enable = true;
   virtualisation.podman.enable = true;
@@ -57,5 +68,5 @@
   };
 
   services.xserver.excludePackages = [ pkgs.xterm ];
-  environment.gnome.excludePackages = [ pkgs.gnome-tour pkgs.gnome-maps pkgs.firefox pkgs.rhythmbox ];
+  environment.gnome.excludePackages = [ pkgs.gnome-tour pkgs.gnome-maps pkgs.firefox pkgs.rhythmbox pkgs.totem pkgs.yelp ];
 }
