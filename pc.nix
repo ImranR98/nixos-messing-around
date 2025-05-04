@@ -13,7 +13,7 @@
 
   environment.systemPackages = with pkgs; [
     git curl wget inotify-tools libheif ffmpeg restic syncthing ffmpeg chromium
-    scrcpy perl perlPackages.ImageExifTool openssl htop
+    scrcpy perl perlPackages.ImageExifTool openssl htop nodejs
     android-studio flutter
     veracrypt mullvad-vpn
     distrobox
@@ -29,6 +29,7 @@
         # jeanp413.open-remote-ssh # fails
       ];
     })
+    steam lutris
   ];
 
   services.udev.extraRules = ''
@@ -66,6 +67,7 @@
       "flathub:app/org.gimp.GIMP//stable"
       "flathub:app/org.getmonero.Monero//stable"
       "flathub:app/io.github.glaumar.QRookie//stable"
+      "flathub:app/org.libreoffice.LibreOffice//stable"
     ];
   };
 
