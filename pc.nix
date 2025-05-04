@@ -1,6 +1,8 @@
 { config, pkgs, lib, ... }:
 
 {
+  nix.settings.experimental-features = [ "nix-command" "flakes" ];
+  
   networking.hostName = lib.mkForce "pc";
 
   users.users.imranr.extraGroups = lib.mkAfter [ "docker" "kvm" "adbusers" "user-with-access-to-virtualbox" ];

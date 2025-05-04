@@ -1,3 +1,5 @@
 - Git config (email/name)
 - Etesync service, Syncthing service if needed separately
 - Fix extensions
+- Steam Lutris
+- Node
